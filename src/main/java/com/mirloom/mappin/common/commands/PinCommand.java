@@ -88,11 +88,12 @@ public class PinCommand {
     private static int pinAdd(CommandSourceStack sourceStack, BlockPos pos, String name) {
         ServerPlayer player = sourceStack.getPlayer();
         player.getCapability(PlayerPinsProvider.PLAYER_PINS).ifPresent(playerPins -> {
-            if (playerPins.getPin(name) == null) {
-                int id = playerPins.addPin(new Pin(playerPins.nextID(), name, pos));
-                sourceStack.sendSystemMessage(Component.translatable("commands.pin.add.success", id, name, pos.getX(), pos.getY(), pos.getZ()));
+            Pin pin = playerPins.getPin(name);
+            if (pin == null) {
+                pin = playerPins.addPin(new Pin(playerPins.nextID(), name, pos, sourceStack.getLevel().dimension().location().toString()));
+                sourceStack.sendSystemMessage(Component.translatable("commands.pin.add.success", pin.id, pin.formattedName(), pos.getX(), pos.getY(), pos.getZ()));
             } else {
-                sourceStack.sendSystemMessage(Component.translatable("commands.pin.add.failure.exists", name));
+                sourceStack.sendSystemMessage(Component.translatable("commands.pin.add.failure.exists", pin.formattedName()));
             }
         });
         return 0;
@@ -103,7 +104,7 @@ public class PinCommand {
         player.getCapability(PlayerPinsProvider.PLAYER_PINS).ifPresent(playerPins -> {
             Pin pin = playerPins.getPin(id);
             if (pin != null) {
-                sourceStack.sendSystemMessage(Component.translatable("commands.pin.get.success", id, pin.name, pin.pos.getX(), pin.pos.getY(), pin.pos.getZ()));
+                sourceStack.sendSystemMessage(Component.translatable("commands.pin.get.success", id, pin.formattedName(), pin.pos.getX(), pin.pos.getY(), pin.pos.getZ()));
             } else {
                 sourceStack.sendSystemMessage(Component.translatable("commands.pin.not_found"));
             }
@@ -116,7 +117,7 @@ public class PinCommand {
         player.getCapability(PlayerPinsProvider.PLAYER_PINS).ifPresent(playerPins -> {
             Pin pin = playerPins.getPin(name);
             if (pin != null) {
-                sourceStack.sendSystemMessage(Component.translatable("commands.pin.get.success", pin.id, name, pin.pos.getX(), pin.pos.getY(), pin.pos.getZ()));
+                sourceStack.sendSystemMessage(Component.translatable("commands.pin.get.success", pin.id, pin.formattedName(), pin.pos.getX(), pin.pos.getY(), pin.pos.getZ()));
             } else {
                 sourceStack.sendSystemMessage(Component.translatable("commands.pin.not_found"));
             }
@@ -133,7 +134,7 @@ public class PinCommand {
                         .append(Component.translatable("commands.pin.list.header"))
                         .append(Component.literal(" |========\n"));
                 pins.forEach(pin -> {
-                    listMessage.append(Component.translatable("commands.pin.get.success", pin.id, pin.name, pin.pos.getX(), pin.pos.getY(), pin.pos.getZ()));
+                    listMessage.append(Component.translatable("commands.pin.get.success", pin.id, pin.formattedName(), pin.pos.getX(), pin.pos.getY(), pin.pos.getZ()));
                     if (pin != pins.get(pins.size() - 1)) {
                         listMessage.append(Component.literal("\n"));
                     }
@@ -151,7 +152,7 @@ public class PinCommand {
         player.getCapability(PlayerPinsProvider.PLAYER_PINS).ifPresent(playerPins -> {
             Pin pin = playerPins.updatePin(id, pos);
             if (pin != null) {
-                sourceStack.sendSystemMessage(Component.translatable("commands.pin.update.success", pin.id, pin.name, pin.pos.getX(), pin.pos.getY(), pin.pos.getZ()));
+                sourceStack.sendSystemMessage(Component.translatable("commands.pin.update.success", pin.id, pin.formattedName(), pin.pos.getX(), pin.pos.getY(), pin.pos.getZ()));
             } else {
                 sourceStack.sendSystemMessage(Component.translatable("commands.pin.not_found"));
             }
@@ -164,7 +165,7 @@ public class PinCommand {
         player.getCapability(PlayerPinsProvider.PLAYER_PINS).ifPresent(playerPins -> {
             Pin pin = playerPins.updatePin(name, pos);
             if (pin != null) {
-                sourceStack.sendSystemMessage(Component.translatable("commands.pin.update.success", pin.id, pin.name, pin.pos.getX(), pin.pos.getY(), pin.pos.getZ()));
+                sourceStack.sendSystemMessage(Component.translatable("commands.pin.update.success", pin.id, pin.formattedName(), pin.pos.getX(), pin.pos.getY(), pin.pos.getZ()));
             } else {
                 sourceStack.sendSystemMessage(Component.translatable("commands.pin.not_found"));
             }
@@ -177,7 +178,7 @@ public class PinCommand {
         player.getCapability(PlayerPinsProvider.PLAYER_PINS).ifPresent(playerPins -> {
             Pin pin = playerPins.removePin(id);
             if (pin != null) {
-                sourceStack.sendSystemMessage(Component.translatable("commands.pin.remove.success", pin.name));
+                sourceStack.sendSystemMessage(Component.translatable("commands.pin.remove.success", pin.formattedName()));
             } else {
                 sourceStack.sendSystemMessage(Component.translatable("commands.pin.not_found"));
             }
@@ -190,7 +191,7 @@ public class PinCommand {
         player.getCapability(PlayerPinsProvider.PLAYER_PINS).ifPresent(playerPins -> {
             Pin pin = playerPins.removePin(name);
             if (pin != null) {
-                sourceStack.sendSystemMessage(Component.translatable("commands.pin.remove.success", pin.name));
+                sourceStack.sendSystemMessage(Component.translatable("commands.pin.remove.success", pin.formattedName()));
             } else {
                 sourceStack.sendSystemMessage(Component.translatable("commands.pin.not_found"));
             }
