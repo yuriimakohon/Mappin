@@ -1,0 +1,10 @@
+{
+  "commands.pin.add.success": "[%d] %s pin saved: %d / %d / %d",
+  "commands.pin.add.failure.exists": "%s pin is already exists",
+  "commands.pin.get.success": "[%d] %s: %d / %d / %d",
+  "commands.pin.list.header": "Your Pins",
+  "commands.pin.list.empty": "You have no pins",
+  "commands.pin.not_found": "No pins found",
+  "commands.pin.update.success": "[%d] %s pin updated: %d / %d / %d",
+  "commands.pin.remove.success": "«%s» pin removed"
+}

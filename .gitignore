@@ -1,0 +1,5 @@
+/self/
+.gradle/*
+.idea/*
+build/*
+run/*
