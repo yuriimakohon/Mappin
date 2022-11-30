@@ -1,0 +1,10 @@
+{
+  "commands.pin.add.success": "[%d] %s шпильку збережено: %d / %d / %d",
+  "commands.pin.add.failure.exists": "%s шпилька уже існує",
+  "commands.pin.get.success": "[%d] %s: %d / %d / %d",
+  "commands.pin.list.header": "Ваші Шпильки",
+  "commands.pin.list.empty": "У вас немає шпильок",
+  "commands.pin.not_found": "Шпильку не знайдено",
+  "commands.pin.update.success": "[%d] %s шпильку оновлено: %d / %d / %d",
+  "commands.pin.remove.success": "%s шпильку видалено"
+}
