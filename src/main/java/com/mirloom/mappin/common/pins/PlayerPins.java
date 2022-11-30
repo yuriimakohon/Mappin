@@ -17,9 +17,9 @@ public class PlayerPins {
         return nextID++;
     }
 
-    public int addPin(Pin pin) {
+    public Pin addPin(Pin pin) {
         pins.add(pin);
-        return pin.id;
+        return pin;
     }
 
     public Pin getPin(int id) {
