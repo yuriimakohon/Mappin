@@ -21,14 +21,18 @@ public class Pin {
 
     public MutableComponent formattedName() {
         MutableComponent component = Component.literal(name);
-        if (dimension.equals("minecraft:overworld")) {
-            component.withStyle(ChatFormatting.GREEN);
-        } else if (dimension.equals("minecraft:the_nether")) {
-            component.withStyle(ChatFormatting.DARK_RED);
-        } else if (dimension.equals("minecraft:the_end")) {
-            component.withStyle(ChatFormatting.DARK_PURPLE);
-        } else {
-            component.withStyle(ChatFormatting.GRAY);
+        switch (dimension) {
+            case "minecraft:overworld":
+                component.withStyle(ChatFormatting.GREEN);
+                break;
+            case "minecraft:the_nether":
+                component.withStyle(ChatFormatting.DARK_RED);
+                break;
+            case "minecraft:the_end":
+                component.withStyle(ChatFormatting.DARK_PURPLE);
+                break;
+            default:
+                component.withStyle(ChatFormatting.GRAY);
         }
         return component;
     }
