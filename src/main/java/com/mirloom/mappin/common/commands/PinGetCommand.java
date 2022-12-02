@@ -13,7 +13,7 @@ class PinGetCommand {
         return Commands.literal("get")
                 .then(Commands.argument("id", IntegerArgumentType.integer()).executes(
                         ctx -> pinGet(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "id"))))
-                .then(Commands.argument("name", StringArgumentType.greedyString()).suggests(PinCommand.pinNamesSuggestionProvider).executes(
+                .then(Commands.argument("name", StringArgumentType.greedyString()).suggests(PinCommand.namesSuggestionProvider).executes(
                         ctx -> pinGet(ctx.getSource(), StringArgumentType.getString(ctx, "name"))));
     }
 

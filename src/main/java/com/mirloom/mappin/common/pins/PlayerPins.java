@@ -64,6 +64,26 @@ public class PlayerPins {
         return null;
     }
 
+    public Pin renamePin(int id, String newName) {
+        for (Pin pin : pins) {
+            if (pin.id == id) {
+                pin.name = newName;
+                return pins.set(pins.indexOf(pin), pin);
+            }
+        }
+        return null;
+    }
+
+    public Pin renamePin(String oldName, String newName) {
+        for (Pin pin : pins) {
+            if (pin.name.equals(oldName)) {
+                pin.name = newName;
+                return pins.set(pins.indexOf(pin), pin);
+            }
+        }
+        return null;
+    }
+
     public Pin removePin(int id) {
         for (Pin pin : pins) {
             if (pin.id == id) {

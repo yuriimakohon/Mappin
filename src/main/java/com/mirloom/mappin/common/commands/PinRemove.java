@@ -13,7 +13,7 @@ public class PinRemove {
         return Commands.literal("remove")
                 .then(Commands.argument("id", IntegerArgumentType.integer()).executes(
                         ctx -> pinRemove(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "id"))))
-                .then(Commands.argument("name", StringArgumentType.greedyString()).suggests(PinCommand.pinNamesSuggestionProvider).executes(
+                .then(Commands.argument("name", StringArgumentType.greedyString()).suggests(PinCommand.namesSuggestionProvider).executes(
                         ctx -> pinRemove(ctx.getSource(), StringArgumentType.getString(ctx, "name"))));
     }
 

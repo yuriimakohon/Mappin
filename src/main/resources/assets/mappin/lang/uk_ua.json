@@ -6,5 +6,6 @@
   "commands.pin.list.empty": "У вас немає шпильок",
   "commands.pin.not_found": "Шпильку не знайдено",
   "commands.pin.update.success": "[%d] %s шпильку оновлено: %d / %d / %d",
+  "commands.pin.update.name.success": "[%d] %s шпильку перейменовано",
   "commands.pin.remove.success": "%s шпильку видалено"
 }

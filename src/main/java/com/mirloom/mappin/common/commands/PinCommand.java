@@ -8,7 +8,6 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -18,19 +17,21 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Mod.EventBusSubscriber(modid = Mappin.MOD_ID)
 public class PinCommand {
-    static SuggestionProvider<CommandSourceStack> pinNamesSuggestionProvider = (context, builder) -> {
-        List<String> pinNames = new ArrayList<>();
-        context.getSource().getPlayer().getCapability(PlayerPinsProvider.PLAYER_PINS).ifPresent(playerPins -> playerPins.getPins().forEach(pin -> pinNames.add(pin.name)));
-        return SharedSuggestionProvider.suggest(pinNames, builder);
+    static SuggestionProvider<CommandSourceStack> namesSuggestionProvider = (context, builder) -> {
+        getPlayerPins(context.getSource()).getPins().forEach(pin -> builder.suggest(pin.name));
+        return builder.buildFuture();
+    };
+
+    static SuggestionProvider<CommandSourceStack> quotedNamesSuggestionProvider = (context, builder) -> {
+        getPlayerPins(context.getSource()).getPins().forEach(pin -> builder.suggest('"' + pin.name + '"'));
+        return builder.buildFuture();
     };
 
     static PlayerPins getPlayerPins(CommandSourceStack sourceStack) {
         ServerPlayer player = sourceStack.getPlayer();
+        assert player != null;
         return player.getCapability(PlayerPinsProvider.PLAYER_PINS).orElseThrow(() -> new IllegalStateException("PlayerPins capability not found"));
     }
 

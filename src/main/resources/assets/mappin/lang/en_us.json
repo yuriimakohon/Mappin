@@ -6,5 +6,6 @@
   "commands.pin.list.empty": "You have no pins",
   "commands.pin.not_found": "No pins found",
   "commands.pin.update.success": "[%d] %s pin updated: %d / %d / %d",
+  "commands.pin.update.name.success": "[%d] %s pin renamed",
   "commands.pin.remove.success": "%s pin removed"
 }
