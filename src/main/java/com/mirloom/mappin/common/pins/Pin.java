@@ -1,10 +1,7 @@
 package com.mirloom.mappin.common.pins;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 
 public class Pin {
     public int id;
@@ -17,24 +14,6 @@ public class Pin {
         this.name = name;
         this.pos = pos;
         this.dimension = dimension;
-    }
-
-    public MutableComponent formattedName() {
-        MutableComponent component = Component.literal(name);
-        switch (dimension) {
-            case "minecraft:overworld":
-                component.withStyle(ChatFormatting.GREEN);
-                break;
-            case "minecraft:the_nether":
-                component.withStyle(ChatFormatting.DARK_RED);
-                break;
-            case "minecraft:the_end":
-                component.withStyle(ChatFormatting.DARK_PURPLE);
-                break;
-            default:
-                component.withStyle(ChatFormatting.GRAY);
-        }
-        return component;
     }
 
     public static Pin fromNBT(CompoundTag tag) {
