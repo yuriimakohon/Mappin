@@ -16,6 +16,12 @@ public class Pin {
         this.dimension = dimension;
     }
 
+    public Pin(String name, BlockPos pos, String dimension) {
+        this.name = name;
+        this.pos = pos;
+        this.dimension = dimension;
+    }
+
     public static Pin fromNBT(CompoundTag tag) {
         return new Pin(
                 tag.getInt("id"),

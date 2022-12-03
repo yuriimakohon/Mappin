@@ -8,6 +8,7 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -19,15 +20,10 @@ import net.minecraftforge.server.command.ConfigCommand;
 
 @Mod.EventBusSubscriber(modid = Mappin.MOD_ID)
 public class PinCommand {
-    static SuggestionProvider<CommandSourceStack> namesSuggestionProvider = (context, builder) -> {
-        getPlayerPins(context.getSource()).getPins().forEach(pin -> builder.suggest(pin.name));
-        return builder.buildFuture();
-    };
-
-    static SuggestionProvider<CommandSourceStack> quotedNamesSuggestionProvider = (context, builder) -> {
-        getPlayerPins(context.getSource()).getPins().forEach(pin -> builder.suggest('"' + pin.name + '"'));
-        return builder.buildFuture();
-    };
+    static final SuggestionProvider<CommandSourceStack> NAMES_SUGGESTION_PROVIDER = (ctx, builder) ->
+            SharedSuggestionProvider.suggest(getPlayerPins(ctx.getSource()).getPins().stream().map(pin -> pin.name), builder);
+    static final SuggestionProvider<CommandSourceStack> QUOTED_NAMES_SUGGESTION_PROVIDER = (ctx, builder) ->
+            SharedSuggestionProvider.suggest(getPlayerPins(ctx.getSource()).getPins().stream().map(pin -> '"' + pin.name + '"'), builder);
 
     static PlayerPins getPlayerPins(CommandSourceStack sourceStack) {
         ServerPlayer player = sourceStack.getPlayer();

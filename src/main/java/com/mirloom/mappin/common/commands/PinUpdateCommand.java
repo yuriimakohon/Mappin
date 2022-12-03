@@ -18,17 +18,17 @@ public class PinUpdateCommand {
                 .then(Commands.literal("position")
                         .then(Commands.argument("id", IntegerArgumentType.integer()).executes(
                                 ctx -> pinUpdate(ctx.getSource(), Objects.requireNonNull(ctx.getSource().getPlayer()).blockPosition(), IntegerArgumentType.getInteger(ctx, "id"))))
-                        .then(Commands.argument("name", StringArgumentType.greedyString()).suggests(PinCommand.namesSuggestionProvider).executes(
+                        .then(Commands.argument("name", StringArgumentType.greedyString()).suggests(PinCommand.NAMES_SUGGESTION_PROVIDER).executes(
                                 ctx -> pinUpdate(ctx.getSource(), Objects.requireNonNull(ctx.getSource().getPlayer()).blockPosition(), StringArgumentType.getString(ctx, "name")))))
                 .then(Commands.argument("coordinates", BlockPosArgument.blockPos())
                         .then(Commands.argument("id", IntegerArgumentType.integer()).executes(
                                 ctx -> pinUpdate(ctx.getSource(), BlockPosArgument.getSpawnablePos(ctx, "coordinates"), IntegerArgumentType.getInteger(ctx, "id"))))
-                        .then(Commands.argument("name", StringArgumentType.greedyString()).suggests(PinCommand.namesSuggestionProvider).executes(
+                        .then(Commands.argument("name", StringArgumentType.greedyString()).suggests(PinCommand.NAMES_SUGGESTION_PROVIDER).executes(
                                 ctx -> pinUpdate(ctx.getSource(), BlockPosArgument.getSpawnablePos(ctx, "coordinates"), StringArgumentType.getString(ctx, "name")))))
                 .then(Commands.literal("name")
                         .then(Commands.argument("id", IntegerArgumentType.integer()).then(Commands.argument("new name", StringArgumentType.greedyString()).executes(
                                 ctx -> pinRename(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "id"), StringArgumentType.getString(ctx, "new name")))))
-                        .then(Commands.argument("old name", StringArgumentType.string()).suggests(PinCommand.quotedNamesSuggestionProvider).then(Commands.argument("new name", StringArgumentType.greedyString()).executes(
+                        .then(Commands.argument("old name", StringArgumentType.string()).suggests(PinCommand.QUOTED_NAMES_SUGGESTION_PROVIDER).then(Commands.argument("new name", StringArgumentType.greedyString()).executes(
                                 ctx -> pinRename(ctx.getSource(), StringArgumentType.getString(ctx, "old name"), StringArgumentType.getString(ctx, "new name"))))));
     }
 
