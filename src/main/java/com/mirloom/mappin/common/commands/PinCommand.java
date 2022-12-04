@@ -9,6 +9,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.arguments.DimensionArgument;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -24,6 +25,8 @@ public class PinCommand {
             SharedSuggestionProvider.suggest(getPlayerPins(ctx.getSource()).getPins().stream().map(pin -> pin.name), builder);
     static final SuggestionProvider<CommandSourceStack> QUOTED_NAMES_SUGGESTION_PROVIDER = (ctx, builder) ->
             SharedSuggestionProvider.suggest(getPlayerPins(ctx.getSource()).getPins().stream().map(pin -> '"' + pin.name + '"'), builder);
+    static final SuggestionProvider<CommandSourceStack> DIMENSION_SUGGESTION_PROVIDER = (ctx, builder) ->
+            DimensionArgument.dimension().listSuggestions(ctx, builder);
 
     static PlayerPins getPlayerPins(CommandSourceStack sourceStack) {
         ServerPlayer player = sourceStack.getPlayer();

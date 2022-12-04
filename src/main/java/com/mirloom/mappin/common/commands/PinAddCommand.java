@@ -6,7 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.commands.arguments.DimensionArgument;
+import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -18,8 +18,8 @@ class PinAddCommand {
         return Commands.literal("add")
                 .then(Commands.literal("position").then(Commands.argument("name", StringArgumentType.greedyString()).executes(
                         ctx -> pinAdd(ctx.getSource(), StringArgumentType.getString(ctx, "name")))))
-                .then(Commands.argument("coordinates", BlockPosArgument.blockPos()).then(Commands.argument("dimension", DimensionArgument.dimension()).then(Commands.argument("name", StringArgumentType.greedyString()).executes(
-                        ctx -> pinAdd(ctx.getSource(), BlockPosArgument.getSpawnablePos(ctx, "coordinates"), DimensionArgument.getDimension(ctx, "dimension").dimension().location().toString(), StringArgumentType.getString(ctx, "name"))))))
+                .then(Commands.argument("coordinates", BlockPosArgument.blockPos()).then(Commands.literal("dimension").then(Commands.argument("dimension", ResourceLocationArgument.id()).suggests(PinCommand.DIMENSION_SUGGESTION_PROVIDER).then(Commands.argument("name", StringArgumentType.greedyString()).executes(
+                        ctx -> pinAdd(ctx.getSource(), BlockPosArgument.getSpawnablePos(ctx, "coordinates"), ResourceLocationArgument.getId(ctx, "dimension").toString(), StringArgumentType.getString(ctx, "name")))))))
                 .then(Commands.argument("coordinates", BlockPosArgument.blockPos()).then(Commands.argument("name", StringArgumentType.greedyString()).executes(
                         ctx -> pinAdd(ctx.getSource(), StringArgumentType.getString(ctx, "name")))));
     }
