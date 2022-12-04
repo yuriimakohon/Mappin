@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.common.capabilities.AutoRegisterCapability;
 
 import java.util.ArrayList;
@@ -12,12 +13,18 @@ import java.util.ArrayList;
 public class PlayerPins {
     private ArrayList<Pin> pins = new ArrayList<>();
     private int nextID = 1;
+    private int deathCount = 1;
 
-    public int nextID() {
+    private int nextID() {
         return nextID++;
     }
 
+    private int nextDeathCount() {
+        return deathCount++;
+    }
+
     public Pin addPin(Pin pin) {
+        pin.id = nextID();
         pins.add(pin);
         return pin;
     }
@@ -112,9 +119,14 @@ public class PlayerPins {
         return pins.remove(index);
     }
 
+    public Pin addDeathPin(BlockPos deathPos, String dimension) {
+        return addPin(new Pin(Component.translatable("mappin.death_pin_name") + " " + nextDeathCount(), deathPos, dimension));
+    }
+
     public void copyFrom(PlayerPins playerPins) {
         pins = playerPins.pins;
         nextID = playerPins.nextID;
+        deathCount = playerPins.deathCount;
     }
 
     public CompoundTag serializeNBT() {
@@ -131,6 +143,7 @@ public class PlayerPins {
         CompoundTag pinsTag = new CompoundTag();
         pinsTag.put("list", listTag);
         pinsTag.putInt("next_id", nextID);
+        pinsTag.putInt("death_count", deathCount);
 
         CompoundTag nbt = new CompoundTag();
         nbt.put("pins", pinsTag);
@@ -140,6 +153,7 @@ public class PlayerPins {
     public void deserializeNBT(CompoundTag nbt) {
         CompoundTag pinsTag = nbt.getCompound("pins");
         nextID = pinsTag.getInt("next_id");
+        deathCount = pinsTag.getInt("death_count");
 
         ListTag listTag = pinsTag.getList("list", Tag.TAG_COMPOUND);
         for (int i = 0; i < listTag.size(); i++) {

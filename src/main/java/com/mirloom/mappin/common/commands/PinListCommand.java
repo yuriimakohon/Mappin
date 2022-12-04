@@ -18,7 +18,7 @@ class PinListCommand {
         ArrayList<Pin> pins = PinCommand.getPlayerPins(sourceStack).getPins();
         if (pins.size() > 0) {
             MutableComponent listMessage = Component.literal("========| ")
-                    .append(Component.translatable("commands.pin.list.header"))
+                    .append(Component.translatable("commands.pin.list_header"))
                     .append(Component.literal(" |========\n"));
             pins.forEach(pin -> {
                 listMessage.append(Component.translatable("commands.pin.get.success", pin.id, PinCommand.nameComponent(pin), pin.pos.getX(), pin.pos.getY(), pin.pos.getZ()));
