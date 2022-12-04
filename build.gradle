@@ -29,7 +29,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 // Default:
 
 
-version = '1.19.2-0.1.0'
+version = '1.19.2-0.2.0'
 group = 'com.mirloom.mappin' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'mappin'
 
