@@ -2,16 +2,19 @@ package com.mirloom.mappin.common.pins;
 
 import com.mirloom.mappin.Mappin;
 import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.capabilities.*;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -59,15 +62,19 @@ public class PlayerPinsProvider implements ICapabilityProvider, INBTSerializable
     }
 
     @SubscribeEvent
-    public static void onPlayerCloned(PlayerEvent.Clone event) {
+    public static void onPlayerDeath(PlayerEvent.Clone event) {
         if (event.isWasDeath()) {
-            event.getOriginal().reviveCaps();
-            event.getOriginal().getCapability(PLAYER_PINS).ifPresent(oldStore -> {
+            Player original = event.getOriginal();
+            original.reviveCaps();
+            original.getCapability(PLAYER_PINS).ifPresent(oldStore -> {
                 event.getEntity().getCapability(PLAYER_PINS).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
+                    GlobalPos location = original.getLastDeathLocation().get();
+                    Pin pin = newStore.addDeathPin(location.pos(), location.dimension().location().toString());
+                    original.sendSystemMessage(Component.translatable("mappin.death_pin_added", pin.id, pin.name, pin.pos.getX(), pin.pos.getY(), pin.pos.getZ()));
                 });
             });
-            event.getOriginal().invalidateCaps();
+            original.invalidateCaps();
         }
     }
 }
