@@ -35,7 +35,6 @@ class PinAddCommand {
     private static int run(CommandSourceStack sourceStack, Pin pin) {
         PlayerPins playerPins = PinCommand.getPlayerPins(sourceStack);
         if (playerPins.getPin(pin.name) == null) {
-            pin.id = playerPins.nextID();
             pin = playerPins.addPin(pin);
             sourceStack.sendSystemMessage(net.minecraft.network.chat.Component.translatable("commands.pin.add.success", pin.id, PinCommand.nameComponent(pin), pin.pos.getX(), pin.pos.getY(), pin.pos.getZ()));
         } else {
